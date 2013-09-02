@@ -6,11 +6,15 @@ Requires at least: 3.6
 Tested up to: trunk
 Stable tag: trunk
 
-Ultra simple photo sharing, for use with your favorite theme. WARNING: This takes over the entire site, currently rendering posts and pages useless.
+Ultra simple photo sharing, for use with your favorite theme. WARNING: This takes over your homepage and archives.
 
 ## Description ##
 
-Snap is a plugin that turns your site into an easy-to-use photo sharing site.
+Snap is a plugin that turns your site into an easy-to-use photo sharing site. All you need to is log in, drag some images to upload, and they will appear on the homepage and in archives. Note that posts will not show alongside.
+
+### Features ###
+
+* Images will show as being uploaded on the date the image was taken, if the data is available.
 
 ### Recommended Themes ###
 

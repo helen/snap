@@ -2,7 +2,7 @@
 /*
 Plugin Name: Snap
 Plugin URI: http://wordpress.org/plugins/snap
-Description: Ultra simple photo sharing, for use with your favorite theme. WARNING: This takes over the entire site, currently rendering posts and pages useless.
+Description: Ultra simple photo sharing, for use with your favorite theme. WARNING: This takes over your homepage and archives.
 Author: Helen Hou-Sandi | 10up
 Version: 0.1
 Author URI: http://profiles.wordpress.org/helen
