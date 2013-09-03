@@ -39,9 +39,9 @@ class Snap_Plugin {
 				return admin_url( 'media-new.php' );
 			else
 				return apply_filters( 'snap_login_redirect', home_url(), $request, $user );
-		} else {
-			return $redirect_to;
 		}
+
+		return $redirect_to;
 	}
 
 	/**
