@@ -34,7 +34,10 @@ class Snap_Plugin {
 	 * @return string Redirect location.
 	 */
 	public function login_redirect( $redirect_to, $request, $user ) {
-		return admin_url( 'media-new.php' );
+		if ( user_can( $user, 'upload_files' ) && user_can( $user, 'publish_posts' ) )
+			return admin_url( 'media-new.php' );
+		else
+			return apply_filters( 'snap_login_redirect', home_url(), $request, $user );
 	}
 
 	/**
