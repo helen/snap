@@ -96,7 +96,8 @@ class Snap_Plugin {
 
 			$post_array = array(
 				'ID' => $post_id,
-				'post_date' => gmdate( 'Y-m-d H:i:s', $data['image_meta']['created_timestamp'] ),
+				'post_date' => date( 'Y-m-d H:i:s', $data['image_meta']['created_timestamp'] ),
+				'post_date_gmt' => gmdate( 'Y-m-d H:i:s', $data['image_meta']['created_timestamp'] ),
 			);
 
 			wp_update_post( $post_array );
