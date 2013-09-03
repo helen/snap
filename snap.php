@@ -17,9 +17,14 @@ class Snap_Plugin {
 	 * @since 0.1
 	 */
 	public function __construct() {
-		add_filter( 'login_redirect', array( $this, 'login_redirect' ), 10, 3 );
-		add_action( 'pre_get_posts',  array( $this, 'pre_get_posts' ) );
-		add_action( 'add_attachment', array( $this, 'add_attachment' ) );
+		add_filter( 'login_redirect',         array( $this, 'login_redirect' ), 10, 3 );
+		add_action( 'pre_get_posts',          array( $this, 'pre_get_posts' ) );
+		add_action( 'add_attachment',         array( $this, 'add_attachment' ) );
+
+		// Snap shortlinks
+		add_action( 'generate_rewrite_rules', array( $this, 'snap_rewrites' ) );
+		add_filter( 'pre_get_shortlink',      array( $this, 'get_shortlink' ), 10, 4 );
+		add_filter( 'attachment_link',        array( $this, 'attachment_permalink' ), 10, 2 );
 	}
 
 	/**
@@ -83,7 +88,7 @@ class Snap_Plugin {
 	 *
 	 * @return array The image meta data array.
 	 */
-	function update_image_date( $data, $post_id ) {
+	public function update_image_date( $data, $post_id ) {
 		// No loops :)
 		// We don't add this back because we only want it to run once per attachment
 		remove_filter( 'wp_update_attachment_metadata', array( $this, 'update_image_date' ), 10, 2 );
@@ -104,6 +109,56 @@ class Snap_Plugin {
 		}
 
 		return $data;
+	}
+
+	/**
+	 * Handle /snap/## as attachment rewrites
+	 * 
+	 * @param WP_Rewrite $wp_rewrite The rewrites object.
+	 * 
+	 * @return string The shortlink.
+	 */
+	public function snap_rewrites( $wp_rewrite ) {
+		$snap = array( 'snap/(\d*)$' => 'index.php?attachment_id=$matches[1]' );
+		$wp_rewrite->rules = $snap + $wp_rewrite->rules;
+	}
+
+	/**
+	 * Filter attachment shortlinks as /snap/$id
+	 *
+	 * @param string $shortlink   The shortlink URL.
+	 * @param int    $id          The post id.
+	 * @param string $context     The shortlink context, default is 'post'.
+	 * @param bool   $allow_slugs Whether to allow post slugs in the shortlink.
+	 *
+	 * @return string The shortlink.
+	 */
+	public function get_shortlink( $shortlink, $id, $context, $allow_slugs ) {
+		global $wp_rewrite;
+
+		if ( $wp_rewrite->using_mod_rewrite_permalinks() ) {
+			if ( 'attachment' == get_post_type( $id ) )
+				$shortlink = home_url( '/snap/' . $id );
+		}
+
+		return $shortlink;
+	}
+
+	/**
+	 * Filter attachment permalinks as /snap/$id
+	 *
+	 * @param string $link The attachment permalink.
+	 * @param int    $id   The post id.
+	 *
+	 * @return string The attachment permalink.
+	 */
+	public function attachment_permalink( $link, $id ) {
+		global $wp_rewrite;
+
+		if ( $wp_rewrite->using_mod_rewrite_permalinks() )
+			$link = home_url( '/snap/' . $id );
+
+		return $link;
 	}
 }
 
