@@ -89,7 +89,7 @@ class Snap_Plugin {
 		remove_filter( 'wp_update_attachment_metadata', array( $this, 'update_image_date' ), 10, 2 );
 
 		// If the created-date is saved in EXIF data
-		if ( isset( $data['image_meta']['created_timestamp'] ) ) {
+		if ( isset( $data['image_meta']['created_timestamp'] ) && 0 !== $data['image_meta']['created_timestamp'] ) {
 			// Save the WordPress-generated publish date
 			$original = get_post_field( 'post_date', $post_id );
 			update_post_meta( $post_id, '_original_upload', $original );
